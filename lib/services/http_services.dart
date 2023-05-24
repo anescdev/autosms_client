@@ -8,10 +8,11 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HttpService {
-  late dio.Dio _httpClient;
+  late final dio.Dio httpClient;
+  static final HttpService instance = HttpService._();
   late PersistCookieJar _cookieJar;
-  HttpService() {
-    _httpClient = dio.Dio(dio.BaseOptions(
+  HttpService._() {
+    httpClient = dio.Dio(dio.BaseOptions(
         baseUrl: "http://10.0.2.2:7654",
         connectTimeout: const Duration(seconds: 8),
         receiveTimeout: const Duration(seconds: 10)));
@@ -20,13 +21,21 @@ class HttpService {
     final Directory path = await getApplicationSupportDirectory();
     _cookieJar = PersistCookieJar(
         ignoreExpires: true, storage: FileStorage("${path.path}/.cks"));
-    _httpClient.interceptors.add(CookieManager(_cookieJar));
+    httpClient.interceptors.add(CookieManager(_cookieJar));
+  }
+
+  void show5xxError() {
+    Get.snackbar("Error", "Hubo un error al intentar conectar con el servidor");
+  }
+
+  void show401Error() {
+    Get.snackbar("Error", "La sesión caducó o no existe");
   }
 
   Future<bool> auth(String username, String password) async {
     try {
       const String dir = "/auth";
-      dio.Response res = await _httpClient
+      dio.Response res = await httpClient
           .post(dir, data: {"username": username, "password": password});
       if (res.statusCode == 200) {
         return true;
@@ -36,8 +45,7 @@ class HttpService {
       if (e.response != null) {
         Get.snackbar("Error", e.response!.data);
       } else {
-        Get.snackbar(
-            "Error", "Hubo un error al intentar conectar con el servidor");
+        show5xxError();
         print(e);
       }
       return false;
@@ -46,12 +54,12 @@ class HttpService {
 
   Future<DashboardDto?> getDashboardValues() async {
     try {
-      dio.Response res = await _httpClient.get("/dashboard-data");
+      dio.Response res = await httpClient.get("/dashboard-data");
       return DashboardDto.fromJson(res.data["dashboardData"]);
     } on dio.DioError catch (e) {
       if (e.response != null) {
         if (e.response!.statusCode == 401) {
-          Get.snackbar("Error", "La sesión caducó o no existe");
+          show401Error();
           return DashboardDto(
               messagesCount: null,
               contactsCount: null,
@@ -60,8 +68,7 @@ class HttpService {
               userName: null);
         }
       } else {
-        Get.snackbar(
-            "Error", "Hubo un error al intentar conectar con el servidor");
+        show5xxError();
         print(e);
       }
     }
@@ -70,19 +77,16 @@ class HttpService {
 
   Future<bool> checkAuth() async {
     try {
-      await _httpClient.get("/check-auth");
-      print(await _cookieJar
-          .loadForRequest(Uri.parse(_httpClient.options.baseUrl)));
-      dio.Response res = await _httpClient.get("/check-auth");
+      await httpClient.get("/check-auth");
+      await _cookieJar.loadForRequest(Uri.parse(httpClient.options.baseUrl));
+      dio.Response res = await httpClient.get("/check-auth");
       if (res.statusCode == 200) return true;
       return false;
     } on dio.DioError catch (e) {
       if (e.response != null) {
-        print(e);
-        print(e.response);
       } else {
-        Get.snackbar(
-            "Error", "Hubo un error al intentar conectar con el servidor");
+        show5xxError();
+        print(e);
       }
       return false;
     }
@@ -90,7 +94,7 @@ class HttpService {
 
   Future<bool> logout() async {
     try {
-      dio.Response res = await _httpClient.get("/logout");
+      dio.Response res = await httpClient.get("/logout");
       if (res.statusCode == 200) {
         Get.snackbar("Sesión cerrada", "La sesión se cerró correctamente");
         return true;
@@ -100,8 +104,8 @@ class HttpService {
       if (e.response != null) {
         Get.snackbar("Error", "No se pudo cerrar la sesión");
       } else {
-        Get.snackbar(
-            "Error", "Hubo un error al intentar conectar con el servidor");
+        show5xxError();
+        print(e);
       }
       return false;
     }

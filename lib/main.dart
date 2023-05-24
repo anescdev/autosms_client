@@ -11,7 +11,7 @@ import './services/http_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.put<HttpService>(HttpService()).setupCookieManager();
+  await HttpService.instance.setupCookieManager();
   runApp(const MyApp());
 }
 

@@ -1,6 +1,4 @@
-import 'package:autosms_client/bindings/bindings.dart';
 import 'package:autosms_client/services/http_dtos.dart';
-import 'package:autosms_client/view/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +10,6 @@ class DashboardScreenController extends GetxController {
   late TextStyle title;
   late TextStyle number;
   late TextStyle comment;
-  late final HttpService httpService;
   RxBool loading = true.obs;
   RxInt messagesCount = 0.obs;
   RxInt contactCount = 0.obs;
@@ -22,7 +19,6 @@ class DashboardScreenController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    httpService = Get.find<HttpService>();
     title =
         GoogleFonts.sourceSansPro(fontSize: 38.0, fontWeight: FontWeight.bold);
     number =
@@ -30,7 +26,7 @@ class DashboardScreenController extends GetxController {
     comment =
         GoogleFonts.sourceSansPro(fontSize: 22.0, fontWeight: FontWeight.bold);
     theme = Get.theme;
-    DashboardDto? data = await httpService.getDashboardValues();
+    DashboardDto? data = await HttpService.instance.getDashboardValues();
     if (data != null) {
       if (data.nodata()) {
         //Get.offAll(const LoginScreen(), binding: LoginBindings());

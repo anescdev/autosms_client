@@ -25,7 +25,7 @@ class HomeScreenController extends GetxController {
     ProfileScreen()
   ];
   void logout() async {
-    if (await Get.find<HttpService>().logout()) {
+    if (await HttpService.instance.logout()) {
       Get.offAll(() => const LoginScreen(), binding: LoginBindings());
     }
   }

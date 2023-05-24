@@ -9,13 +9,11 @@ class LoginScreenController extends GetxController {
   late TextEditingController userController;
   late TextEditingController passController;
   final formKey = GlobalKey<FormState>();
-  late final HttpService httpService;
   RxBool loadingState = true.obs;
   @override
   void onInit() async {
     super.onInit();
-    httpService = Get.find<HttpService>();
-    if (await httpService.checkAuth()) {
+    if (await HttpService.instance.checkAuth()) {
       print("Existe mi pana");
       return Get.offAll(() => const HomeScreen(), binding: HomeBindings());
     }
@@ -47,7 +45,8 @@ class LoginScreenController extends GetxController {
 
   void tryLogin() async {
     if (formKey.currentState!.validate()) {
-      if (await httpService.auth(userController.text, passController.text)) {
+      if (await HttpService.instance
+          .auth(userController.text, passController.text)) {
         loadingState.value = true;
         userController.clear();
         passController.clear();
