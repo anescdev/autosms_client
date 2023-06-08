@@ -1,13 +1,12 @@
-import 'package:autosms_client/bindings/bindings.dart';
-import 'package:autosms_client/view/login_screen.dart';
-
-import 'theme/color_schemes.g.dart';
-import './theme/custom_color.g.dart';
-
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import './services/http_services.dart';
+
+import 'bindings/bindings.dart';
+import 'services/http_services.dart';
+import 'theme/color_schemes.g.dart';
+import 'theme/custom_color.g.dart';
+import 'ui/login_screen/screen/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +50,6 @@ class MyApp extends StatelessWidget {
               colorScheme: darkScheme,
               extensions: [darkCustomColors],
             ),
-            //onInit: () => Get.put<HttpService>(HttpService()),
             title: "AutoSMS",
             initialBinding: LoginBindings(),
             home: const LoginScreen());

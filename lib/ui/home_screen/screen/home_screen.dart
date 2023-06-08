@@ -1,6 +1,8 @@
-import 'package:autosms_client/controllers/home_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../utils/utils.dart';
+import '../controller/home_screen_controller.dart';
 
 class HomeScreen extends GetView<HomeScreenController> {
   const HomeScreen({super.key});
@@ -10,11 +12,8 @@ class HomeScreen extends GetView<HomeScreenController> {
     return Obx(() => Scaffold(
         appBar: AppBar(
           title: Text(controller.titles[controller.selectedIndex.value],
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-          actions: [
-            IconButton(
-                onPressed: controller.logout, icon: const Icon(Icons.logout))
-          ],
+              style: Utils.textBold),
+          actions: controller.actions[controller.selectedIndex.value],
         ),
         body: IndexedStack(
           index: controller.selectedIndex.value,

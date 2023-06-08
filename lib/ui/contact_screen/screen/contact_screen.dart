@@ -1,11 +1,11 @@
-import 'package:autosms_client/controllers/contact_screen_controller.dart';
-import 'package:autosms_client/models/group_manager.dart';
-import 'package:autosms_client/models/manager_element_model.dart';
+import 'package:autosms_client/bindings/bindings.dart';
+import 'package:autosms_client/ui/contact_screen/screen/view_group_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../utils/utils.dart';
+import '../../../utils/utils.dart';
+import '../controller/contact_screen_controller.dart';
+import 'view_contact_screen.dart';
 
 class ContactScreen extends GetView<ContactScreenController> {
   const ContactScreen({super.key});
@@ -15,7 +15,7 @@ class ContactScreen extends GetView<ContactScreenController> {
     return Scaffold(
       body: Center(child: Obx(() {
         if (controller.loading.isTrue) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
         return Column(
           children: [
@@ -25,12 +25,14 @@ class ContactScreen extends GetView<ContactScreenController> {
                         value: ManagerElementType.contact,
                         label: const Text("Contactos"),
                         icon: const Icon(Icons.contacts),
-                        enabled: !controller.loading.value),
+                        enabled: !(controller.loading.value ||
+                            controller.deleting.value)),
                     ButtonSegment<ManagerElementType>(
                         value: ManagerElementType.group,
                         label: const Text("Grupos"),
                         icon: const Icon(Icons.groups),
-                        enabled: !controller.loading.value)
+                        enabled: !(controller.loading.value ||
+                            controller.deleting.value))
                   ],
                   style: controller.theme.segmentedButtonTheme.style,
                   selected: <ManagerElementType>{controller.typeElement.value},
@@ -50,27 +52,33 @@ class ContactScreen extends GetView<ContactScreenController> {
                     itemBuilder: (context, index) {
                       return Obx(() {
                         return ListTile(
-                          selectedTileColor: controller.selected.contains(index)
+                          selectedTileColor: controller.selected
+                                  .contains(controller.contacts[index])
                               ? Colors.grey.withOpacity(0.1)
                               : null,
                           onTap: () {
-                            int indexPlace = controller.selected.indexOf(index);
+                            int indexPlace = controller.selected
+                                .indexOf(controller.contacts[index]);
                             if (indexPlace == -1) {
-                              Get.snackbar("Error", "No implementado",
-                                  duration: const Duration(seconds: 2));
+                              Get.to(() => const ViewContactScreen(),
+                                  arguments: controller.contacts[index],
+                                  binding: ContactViewBindings());
                             } else {
                               controller.selected.removeAt(indexPlace);
                             }
                           },
                           onLongPress: () {
-                            int indexPlace = controller.selected.indexOf(index);
+                            int indexPlace = controller.selected
+                                .indexOf(controller.contacts[index]);
                             if (indexPlace == -1) {
-                              controller.selected.add(index);
+                              controller.selected
+                                  .add(controller.contacts[index]);
                             } else {
                               controller.selected.removeAt(indexPlace);
                             }
                           },
-                          selected: controller.selected.contains(index),
+                          selected: controller.selected
+                              .contains(controller.contacts[index]),
                           style: controller.theme.listTileTheme.style,
                           leading: CircleAvatar(
                             child: Text(controller.contacts[index].name
@@ -86,30 +94,34 @@ class ContactScreen extends GetView<ContactScreenController> {
                     itemCount: controller.groups.length,
                     itemBuilder: (context, index) {
                       return Obx(() => ListTile(
-                            selectedTileColor:
-                                controller.selected.contains(index)
-                                    ? Colors.grey.withOpacity(0.1)
-                                    : null,
+                            selectedTileColor: controller.selected
+                                    .contains(controller.groups[index])
+                                ? Colors.grey.withOpacity(0.1)
+                                : null,
                             onTap: () {
-                              int indexPlace =
-                                  controller.selected.indexOf(index);
+                              int indexPlace = controller.selected
+                                  .indexOf(controller.groups[index]);
                               if (indexPlace == -1) {
-                                Get.snackbar("Error", "No implementado",
-                                    duration: const Duration(seconds: 2));
+                                print(controller.groups[index].groupElements);
+                                Get.to(() => const ViewGroupScreen(),
+                                    binding: GroupViewBindings(),
+                                    arguments: controller.groups[index]);
                               } else {
                                 controller.selected.removeAt(indexPlace);
                               }
                             },
                             onLongPress: () {
-                              int indexPlace =
-                                  controller.selected.indexOf(index);
+                              int indexPlace = controller.selected
+                                  .indexOf(controller.groups[index]);
                               if (indexPlace == -1) {
-                                controller.selected.add(index);
+                                controller.selected
+                                    .add(controller.groups[index]);
                               } else {
                                 controller.selected.removeAt(indexPlace);
                               }
                             },
-                            selected: controller.selected.contains(index),
+                            selected: controller.selected
+                                .contains(controller.groups[index]),
                             style: controller.theme.listTileTheme.style,
                             leading: CircleAvatar(
                               child: Text(controller.groups[index].name
@@ -118,18 +130,21 @@ class ContactScreen extends GetView<ContactScreenController> {
                             title: Text(controller.groups[index].name),
                             trailing: Text(
                                 "Participantes: ${controller.groups[index].members}",
-                                style: TextStyle(fontSize: 14.0)),
+                                style: const TextStyle(fontSize: 14.0)),
                           ));
                     })
           ],
         );
       })),
       floatingActionButton: Obx(() => FloatingActionButton.extended(
-          icon: Icon(controller.typeElement == ManagerElementType.contact
+          icon: Icon(controller.typeElement.value == ManagerElementType.contact
               ? Icons.person_add
               : Icons.group_add),
           label: const Text("Crear"),
-          onPressed: () => Get.snackbar("Error", "No implementado"))),
+          onPressed: () =>
+              controller.typeElement.value == ManagerElementType.contact
+                  ? controller.goToCreateContact()
+                  : controller.goToCreateGroup())),
     );
   }
 }

@@ -1,9 +1,9 @@
-import 'package:autosms_client/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../bindings/bindings.dart';
-import '../services/http_services.dart';
+import '../../../bindings/bindings.dart';
+import '../../../services/http_services.dart';
+import '../../home_screen/screen/home_screen.dart';
 
 class LoginScreenController extends GetxController {
   late TextEditingController userController;

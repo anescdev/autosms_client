@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../services/http_services.dart';
+import '../../../services/http_services.dart';
 
 class DashboardScreenController extends GetxController {
   late ThemeData theme;

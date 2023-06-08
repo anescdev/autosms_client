@@ -1,9 +1,10 @@
 import 'dart:io';
-
-import 'package:autosms_client/controllers/login_screen_controller.dart';
 //import 'package:autosms_client/theme/custom_color.g.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../utils/utils.dart';
+import '../controller/login_screen_controller.dart';
 
 class LoginScreen extends GetView<LoginScreenController> {
   const LoginScreen({super.key});
@@ -15,7 +16,7 @@ class LoginScreen extends GetView<LoginScreenController> {
         appBar: AppBar(
             title: const Text(
           "Inicio de sesión",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: Utils.textBold,
         )),
         body: Center(child: Obx(() {
           if (controller.loadingState.value) {
