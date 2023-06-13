@@ -136,14 +136,6 @@ class HttpService {
       dio.Response res = await httpClient.get("/messages",
           queryParameters: {"limit": limit, "offset": offset});
       for (var actJson in res.data["messages"]) {
-        List<ManagerElement> managerElementList =
-            actJson["receptors"].map<ManagerElement>((e) {
-          if ((e["__t"] as String).compareTo("Contact") == 0) {
-            return Contact.fromJson(e);
-          } else {
-            return Group.fromJson(e);
-          }
-        }).toList();
         if ((actJson["__t"] as String).compareTo("Email") == 0) {
           msgs.add(Email.fromJson(actJson));
         } else {

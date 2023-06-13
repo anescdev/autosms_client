@@ -46,6 +46,9 @@ class HomeScreenController extends GetxController {
     actions = [
       [logOutButton],
       [
+        IconButton(
+            onPressed: () => messagesScreenController.getAndPushMessages(true),
+            icon: const Icon(Icons.refresh)),
         Obx(() => IconButton(
             onPressed: messagesScreenController.selected.isEmpty
                 ? null

@@ -11,8 +11,8 @@ class ViewGroupScreen extends GetView<ViewGroupScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(title: const Text("Añadir grupo", style: Utils.textBold)),
+        appBar: AppBar(
+            title: const Text("Información de grupo", style: Utils.textBold)),
         body: Center(
             child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

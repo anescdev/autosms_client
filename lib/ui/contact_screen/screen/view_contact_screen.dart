@@ -10,8 +10,9 @@ class ViewContactScreen extends GetView<ViewContactScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(title: const Text("Añadir contacto", style: Utils.textBold)),
+        appBar: AppBar(
+            title:
+                const Text("Información de contacto", style: Utils.textBold)),
         body: Center(
             child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),

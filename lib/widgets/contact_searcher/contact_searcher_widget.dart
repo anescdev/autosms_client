@@ -1,3 +1,4 @@
+import 'package:autosms_client/models/manager_element_model.dart';
 import 'package:autosms_client/utils/utils.dart';
 import 'package:autosms_client/widgets/contact_searcher/contact_searcher_controller.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +8,14 @@ import '../../models/contact_model.dart';
 
 class ContactSearcher extends StatelessWidget {
   final bool readOnly;
-  late RxList<Contact>? selected;
-  final RxList<Contact> founded;
+  late RxList<ManagerElement>? selected;
+  final RxList<ManagerElement> founded;
   ContactSearcher(
       {super.key, this.readOnly = true, this.selected, required this.founded});
 
   @override
   Widget build(BuildContext context) {
-    selected ??= <Contact>[].obs;
+    selected ??= <ManagerElement>[].obs;
     Get.put(ContactSearcherController(
         selected: selected!, readOnly: readOnly, founded: founded));
     return GetBuilder<ContactSearcherController>(builder: (controller) {
@@ -105,7 +106,10 @@ class ContactSearcher extends StatelessWidget {
                                               controller.founded[index])
                                           ? true
                                           : false,
-                                      leading: const Icon(Icons.person),
+                                      leading: Icon(
+                                          controller.founded[index] is Contact
+                                              ? Icons.person
+                                              : Icons.group),
                                       title:
                                           Text(controller.founded[index].name),
                                     ),

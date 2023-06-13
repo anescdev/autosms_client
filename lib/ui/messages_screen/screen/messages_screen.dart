@@ -1,10 +1,13 @@
+import 'package:autosms_client/bindings/bindings.dart';
 import 'package:autosms_client/models/email_model.dart';
 import 'package:autosms_client/models/message_model.dart';
 import 'package:autosms_client/models/sms_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/utils.dart';
 import '../controller/messages_screen_controller.dart';
+import 'add_message_screen.dart';
 
 class MessagesScreen extends GetView<MessagesScreenController> {
   const MessagesScreen({super.key});
@@ -57,7 +60,7 @@ class MessagesScreen extends GetView<MessagesScreenController> {
                             title: Text(actElement is Email
                                 ? actElement.subject
                                 : actElement.updateDate.toString()),
-                            trailing: controller.getIcon(actElement),
+                            trailing: Utils.getIcon(actElement),
                             onTap: () => controller.onTap(actElement),
                             onLongPress: () =>
                                 controller.onLongPress(actElement),
@@ -83,7 +86,7 @@ class MessagesScreen extends GetView<MessagesScreenController> {
                             () => ListTile(
                               leading: const Icon(Icons.email),
                               title: Text(actElement.subject),
-                              trailing: controller.getIcon(actElement),
+                              trailing: Utils.getIcon(actElement),
                               onTap: () => controller.onTap(actElement),
                               onLongPress: () =>
                                   controller.onLongPress(actElement),
@@ -110,7 +113,7 @@ class MessagesScreen extends GetView<MessagesScreenController> {
                           () => ListTile(
                             leading: const Icon(Icons.sms),
                             title: Text(actElement.updateDate.toString()),
-                            trailing: controller.getIcon(actElement),
+                            trailing: Utils.getIcon(actElement),
                             onLongPress: () =>
                                 controller.onLongPress(actElement),
                             onTap: () => controller.onTap(actElement),
@@ -141,7 +144,8 @@ class MessagesScreen extends GetView<MessagesScreenController> {
             );
           }
           return FloatingActionButton(
-            onPressed: () {},
+            onPressed: () => Get.to(() => const CreateMessageScreen(),
+                binding: CreateMessageBindings()),
             heroTag: "addBtn",
             child: const Icon(Icons.add),
           );

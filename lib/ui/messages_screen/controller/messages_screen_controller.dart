@@ -1,5 +1,7 @@
+import 'package:autosms_client/bindings/bindings.dart';
 import 'package:autosms_client/services/http_services.dart';
 import 'package:autosms_client/theme/custom_color.g.dart';
+import 'package:autosms_client/ui/messages_screen/screen/view_message_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
@@ -10,7 +12,6 @@ class MessagesScreenController extends GetxController {
   RxList<Message> founded = <Message>[].obs;
   Rx<MessageType> typeElement = MessageType.all.obs;
   ThemeData theme = Get.theme;
-  final CustomColors extension = Get.theme.extension<CustomColors>()!;
   RxList<Message> selected = <Message>[].obs;
 
   int limit = 25;
@@ -18,12 +19,7 @@ class MessagesScreenController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    loading.value = true;
-    List<Message>? temp = await HttpService.instance.getMessages(limit, offset);
-    if (temp != null) {
-      founded.addAll(temp);
-    }
-    loading.value = false;
+    getAndPushMessages(false);
   }
 
   void onFilterChange(Set<MessageType> value) {
@@ -48,29 +44,22 @@ class MessagesScreenController extends GetxController {
       selected.remove(msg);
     } else if (selected.isNotEmpty) {
       selected.add(msg);
+    } else {
+      Get.to(() => const ViewMessageScreen(),
+          binding: ViewMessageBindings(), arguments: msg);
     }
   }
 
-  Icon getIcon(Message msg) {
-    switch (msg.state) {
-      case MessageState.noEnviado:
-        return Icon(
-          Icons.close,
-          color: extension.fail,
-        );
-      case MessageState.enCola:
-        return Icon(
-          Icons.schedule,
-          color: extension.wait,
-        );
-      case MessageState.enviado:
-        return Icon(
-          Icons.done,
-          color: extension.good,
-        );
-      default:
-        throw Exception("No se pasó un valor válido");
+  void getAndPushMessages(bool clearList) async {
+    loading.value = true;
+    List<Message>? temp = await HttpService.instance.getMessages(limit, offset);
+    if (temp != null) {
+      if (clearList) {
+        founded.clear();
+      }
+      founded.addAll(temp);
     }
+    loading.value = false;
   }
 }
 

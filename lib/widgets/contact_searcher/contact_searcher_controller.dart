@@ -1,3 +1,4 @@
+import 'package:autosms_client/models/manager_element_model.dart';
 import 'package:get/get.dart';
 
 import '../../models/contact_model.dart';
@@ -5,13 +6,13 @@ import '../../models/contact_model.dart';
 class ContactSearcherController extends GetxController {
   ContactSearcherController(
       {required this.selected, this.readOnly = false, required this.founded});
-  final RxList<Contact> selected;
+  final RxList<ManagerElement> selected;
   bool readOnly;
   RxBool hasVal = false.obs;
   RxBool notFound = false.obs;
   RxBool isSearching = false.obs;
   String val = "";
-  final RxList<Contact> founded;
+  final RxList<ManagerElement> founded;
   final int limit = 25;
   int offset = 0;
 
