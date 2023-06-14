@@ -11,7 +11,7 @@ import 'ui/login_screen/screen/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   await HttpService.instance.setupCookieManager();
   runApp(const MyApp());
 }

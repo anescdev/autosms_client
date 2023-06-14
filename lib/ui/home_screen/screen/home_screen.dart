@@ -18,8 +18,7 @@ class HomeScreen extends GetView<HomeScreenController> {
         ),
         body: GestureDetector(
           onTapDown: (tap) {
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-                overlays: []);
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
           },
           child: IndexedStack(
             index: controller.selectedIndex.value,
