@@ -100,15 +100,14 @@ class HttpService {
       await _cookieJar.loadForRequest(Uri.parse(httpClient.options.baseUrl));
       dio.Response res = await httpClient.get("/check-auth");
       if (res.statusCode == 200) return true;
-      return false;
     } on dio.DioError catch (e) {
       if (e.response != null) {
       } else {
         show5xxError();
         print(e);
       }
-      return false;
     }
+    return false;
   }
 
   Future<bool> logout() async {
