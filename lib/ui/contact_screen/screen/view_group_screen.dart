@@ -82,6 +82,7 @@ class ViewGroupScreen extends GetView<ViewGroupScreenController> {
                                   readOnly: true,
                                   founded:
                                       controller.actualGroup.groupElements.obs,
+                                  includeGroups: false,
                                 ),
                               )
                             ]))),

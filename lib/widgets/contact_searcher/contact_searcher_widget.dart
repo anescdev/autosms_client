@@ -10,14 +10,22 @@ class ContactSearcher extends StatelessWidget {
   final bool readOnly;
   late RxList<ManagerElement>? selected;
   final RxList<ManagerElement> founded;
+  final bool includeGroups;
   ContactSearcher(
-      {super.key, this.readOnly = true, this.selected, required this.founded});
+      {super.key,
+      this.readOnly = true,
+      this.selected,
+      required this.founded,
+      required this.includeGroups});
 
   @override
   Widget build(BuildContext context) {
     selected ??= <ManagerElement>[].obs;
     Get.put(ContactSearcherController(
-        selected: selected!, readOnly: readOnly, founded: founded));
+        selected: selected!,
+        readOnly: readOnly,
+        founded: founded,
+        includeGroups: includeGroups));
     return GetBuilder<ContactSearcherController>(builder: (controller) {
       return Column(children: [
         Container(

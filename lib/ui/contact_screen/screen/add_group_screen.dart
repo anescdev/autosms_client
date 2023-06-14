@@ -98,6 +98,7 @@ class AddGroupScreen extends GetView<AddGroupScreenController> {
                                       readOnly: false,
                                       selected: controller.selectedContact,
                                       founded: <Contact>[].obs,
+                                      includeGroups: false,
                                     ),
                                   )
                                 ]))),

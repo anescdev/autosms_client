@@ -17,7 +17,7 @@ abstract class Message {
       required this.state,
       required this.emiter,
       required this.message});
-  Message toJson();
+  Map<String, dynamic> toJson();
 }
 
 enum MessageState { noEnviado, enCola, enviado }

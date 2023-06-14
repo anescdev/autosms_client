@@ -30,7 +30,7 @@ class SmsMessage extends Message {
   }
 
   @override
-  Message toJson() {
+  Map<String, dynamic> toJson() {
     // TODO: implement toJson
     throw UnimplementedError();
   }

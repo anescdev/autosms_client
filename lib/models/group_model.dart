@@ -109,4 +109,28 @@ class Group extends ManagerElement {
     }
     return groupsFounded;
   }
+
+  static Future<List<Group>> getAllByName(
+      int limit, int offset, String name) async {
+    List<Group> groupsFounded = [];
+    try {
+      for (var actJsonGroup in (await HttpService.instance.httpClient.get(
+              "/groups",
+              queryParameters: Map.fromEntries([
+                MapEntry("limit", limit),
+                MapEntry("offset", offset),
+                MapEntry("name", name)
+              ])))
+          .data["groups"]) {
+        groupsFounded.add(Group.fromJson(actJsonGroup));
+      }
+    } on dio.DioError catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 401) HttpService.instance.show401Error();
+      } else {
+        HttpService.instance.show5xxError();
+      }
+    }
+    return groupsFounded;
+  }
 }

@@ -40,8 +40,7 @@ class Email extends Message {
   }
 
   @override
-  Message toJson() {
-    // TODO: implement toJson
+  Map<String, dynamic> toJson() {
     throw UnimplementedError();
   }
 }

@@ -25,81 +25,91 @@ class ViewMessageScreen extends GetView<ViewMessageScreenController> {
               ]
             : [],
       ),
-      body: Center(
-          child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            ListTile(
-              leading: Utils.getIcon(controller.message),
-              title: const Text("Estado"),
-              subtitle:
-                  Text(controller.message.state.value == MessageState.noEnviado
-                      ? "No enviado"
-                      : controller.message.state.value == MessageState.enCola
-                          ? "En cola"
-                          : "Enviado"),
-            ),
-            const Divider(),
-            controller.message is Email
-                ? Column(
-                    children: [
-                      ListTile(
-                          leading: const Icon(Icons.subject),
-                          title: const Text("Asunto"),
-                          subtitle:
-                              Text((controller.message as Email).subject)),
-                      const Divider(),
-                    ],
-                  )
-                : const SizedBox.shrink(),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text("Remitente"),
-              subtitle: Text(controller.message.emiter),
-            ),
-            const Divider(),
-            const ListTile(
-              leading: Icon(Icons.groups),
-              title: Text("Destinatiarios"),
-            ),
-            SizedBox(
-                width: Utils.percentajeToPx(context.width, 90),
-                child: ContactSearcher(
-                    founded: controller.message.receptors.obs, readOnly: true)),
-            const Divider(),
-            const ListTile(
-              leading: Icon(Icons.description),
-              title: Text("Mensaje"),
-            ),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                  minWidth: Utils.percentajeToPx(context.width, 90),
-                  maxHeight: Utils.percentajeToPx(context.height, 20)),
-              child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: Text(controller.message.message,
-                      textAlign: TextAlign.left)),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.today),
-              title: const Text("Última actualización"),
-              subtitle:
-                  Text(Utils.formatDate(controller.message.updateDate, true)),
-            ),
-            const Divider(),
-            controller.message.sendDate != null
-                ? ListTile(
-                    leading: const Icon(Icons.today),
-                    title: const Text("Fecha y hora de envío"),
-                    subtitle: Text(
-                        Utils.formatDate(controller.message.sendDate!, true)),
-                  )
-                : const SizedBox.shrink(),
-          ],
-        ),
-      )),
+      body: Center(child: Obx(() {
+        if (controller.loading.isTrue) {
+          return const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [CircularProgressIndicator(), Text("Enviando")],
+          );
+        }
+        return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              ListTile(
+                leading: Utils.getIcon(controller.message),
+                title: const Text("Estado"),
+                subtitle: Text(
+                    controller.message.state.value == MessageState.noEnviado
+                        ? "No enviado"
+                        : controller.message.state.value == MessageState.enCola
+                            ? "En cola"
+                            : "Enviado"),
+              ),
+              const Divider(),
+              controller.message is Email
+                  ? Column(
+                      children: [
+                        ListTile(
+                            leading: const Icon(Icons.subject),
+                            title: const Text("Asunto"),
+                            subtitle:
+                                Text((controller.message as Email).subject)),
+                        const Divider(),
+                      ],
+                    )
+                  : const SizedBox.shrink(),
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text("Remitente"),
+                subtitle: Text(controller.message.emiter),
+              ),
+              const Divider(),
+              const ListTile(
+                leading: Icon(Icons.groups),
+                title: Text("Destinatarios"),
+              ),
+              SizedBox(
+                  width: Utils.percentajeToPx(context.width, 90),
+                  child: ContactSearcher(
+                    founded: controller.message.receptors.obs,
+                    readOnly: true,
+                    includeGroups: false,
+                  )),
+              const Divider(),
+              const ListTile(
+                leading: Icon(Icons.description),
+                title: Text("Mensaje"),
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    minWidth: Utils.percentajeToPx(context.width, 90),
+                    maxHeight: Utils.percentajeToPx(context.height, 20)),
+                child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: Text(controller.message.message,
+                        textAlign: TextAlign.left)),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.today),
+                title: const Text("Última actualización"),
+                subtitle:
+                    Text(Utils.formatDate(controller.message.updateDate, true)),
+              ),
+              const Divider(),
+              controller.message.sendDate != null
+                  ? ListTile(
+                      leading: const Icon(Icons.today),
+                      title: const Text("Fecha y hora de envío"),
+                      subtitle: Text(
+                          Utils.formatDate(controller.message.sendDate!, true)),
+                    )
+                  : const SizedBox.shrink(),
+            ],
+          ),
+        );
+      })),
     );
   }
 }

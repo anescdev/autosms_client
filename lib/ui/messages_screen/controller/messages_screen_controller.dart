@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import '../../../models/message_model.dart';
+import '../screen/add_message_screen.dart';
 
 class MessagesScreenController extends GetxController {
   RxBool loading = false.obs;
@@ -60,6 +61,13 @@ class MessagesScreenController extends GetxController {
       founded.addAll(temp);
     }
     loading.value = false;
+  }
+
+  void toCreateAction() async {
+    Map<String, dynamic> data = {"valid": false, "messageCreated": null};
+    await Get.to(() => const CreateMessageScreen(),
+        binding: CreateMessageBindings(), arguments: data);
+    if (data["valid"]) getAndPushMessages(true);
   }
 }
 

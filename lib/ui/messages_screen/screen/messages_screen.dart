@@ -144,8 +144,7 @@ class MessagesScreen extends GetView<MessagesScreenController> {
             );
           }
           return FloatingActionButton(
-            onPressed: () => Get.to(() => const CreateMessageScreen(),
-                binding: CreateMessageBindings()),
+            onPressed: controller.toCreateAction,
             heroTag: "addBtn",
             child: const Icon(Icons.add),
           );
