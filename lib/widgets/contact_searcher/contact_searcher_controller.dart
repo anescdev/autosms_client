@@ -45,7 +45,7 @@ class ContactSearcherController extends GetxController {
           group.removeWhere((element) => element.id == actContact.id);
         }
         founded.addAll(list);
-        founded.addAll(group);
+        if (includeGroups) founded.addAll(group);
         notFound.value = false;
       }
       isSearching.value = false;

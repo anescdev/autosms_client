@@ -20,11 +20,11 @@ class DashboardScreenController extends GetxController {
   void onInit() async {
     super.onInit();
     title =
-        GoogleFonts.sourceSansPro(fontSize: 38.0, fontWeight: FontWeight.bold);
+        GoogleFonts.sourceSansPro(fontSize: 32.0, fontWeight: FontWeight.bold);
     number =
-        GoogleFonts.sourceSansPro(fontSize: 28.0, fontWeight: FontWeight.bold);
-    comment =
         GoogleFonts.sourceSansPro(fontSize: 22.0, fontWeight: FontWeight.bold);
+    comment =
+        GoogleFonts.sourceSansPro(fontSize: 18.0, fontWeight: FontWeight.bold);
     theme = Get.theme;
     DashboardDto? data = await HttpService.instance.getDashboardValues();
     if (data != null) {

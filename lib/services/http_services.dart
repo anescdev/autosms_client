@@ -20,7 +20,7 @@ class HttpService {
   late PersistCookieJar _cookieJar;
   HttpService._() {
     httpClient = dio.Dio(dio.BaseOptions(
-        baseUrl: "http://10.0.2.2:7654",
+        baseUrl: "http://anescdev.es:7654",
         connectTimeout: const Duration(seconds: 8),
         receiveTimeout: const Duration(seconds: 10)));
   }

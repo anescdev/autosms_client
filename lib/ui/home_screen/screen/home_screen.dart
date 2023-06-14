@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/utils.dart';
@@ -15,9 +16,15 @@ class HomeScreen extends GetView<HomeScreenController> {
               style: Utils.textBold),
           actions: controller.actions[controller.selectedIndex.value],
         ),
-        body: IndexedStack(
-          index: controller.selectedIndex.value,
-          children: controller.screens,
+        body: GestureDetector(
+          onTapDown: (tap) {
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                overlays: []);
+          },
+          child: IndexedStack(
+            index: controller.selectedIndex.value,
+            children: controller.screens,
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
