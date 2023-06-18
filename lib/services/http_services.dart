@@ -115,6 +115,7 @@ class HttpService {
       dio.Response res = await httpClient.get("/logout");
       if (res.statusCode == 200) {
         Get.snackbar("Sesión cerrada", "La sesión se cerró correctamente");
+        await HttpService.instance._cookieJar.deleteAll();
         return true;
       }
       return false;

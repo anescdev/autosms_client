@@ -15,6 +15,7 @@ class LoginScreenController extends GetxController {
     super.onInit();
     if (await HttpService.instance.checkAuth()) {
       print("Existe mi pana");
+      loadingState.value = false;
       return Get.offAll(() => const HomeScreen(), binding: HomeBindings());
     }
     print("No existe mi pana");
